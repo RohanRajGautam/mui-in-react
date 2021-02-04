@@ -23,6 +23,7 @@ function App() {
             path='/mobileapps'
             component={() => <div>Mobile Apps</div>}
           />
+          <Route exact path='/website' component={() => <div>WebDev</div>} />
           <Route
             exact
             path='/revolution'

@@ -9,6 +9,8 @@ import {
   Tabs,
   Tab,
   Button,
+  Menu,
+  MenuItem,
 } from '@material-ui/core';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 
@@ -16,23 +18,26 @@ import { Link } from 'react-router-dom';
 import logo from '../../assets/logo.svg';
 
 const useStyles = makeStyles((theme) => ({
+  appbar: {
+    // zIndex: theme.zIndex.modal + 1,
+  },
   toolbarMargin: {
     ...theme.mixins.toolbar,
-    marginBottom: '3em',
-    [theme.breakpoints.down('md')]: {
-      marginBottom: '2em',
-    },
-    [theme.breakpoints.down('xs')]: {
-      marginBottom: '1.25em',
-    },
+    // marginBottom: '3em',
+    // [theme.breakpoints.down('md')]: {
+    //   marginBottom: '2em',
+    // },
+    // [theme.breakpoints.down('xs')]: {
+    //   marginBottom: '1.25em',
+    // },
   },
   logo: {
-    height: '8em',
+    height: '7em',
     [theme.breakpoints.down('md')]: {
-      height: '7em',
+      height: '6em',
     },
     [theme.breakpoints.down('xs')]: {
-      height: '5.5em',
+      height: '4.5em',
     },
   },
   logoContainer: {
@@ -59,11 +64,21 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.secondary.light,
     },
   },
+  menu: {
+    backgroundColor: theme.palette.common.blue,
+    color: 'white',
+  },
+  menuItem: {
+    ...theme.typography.tab,
+    opacity: 0.7,
+    '&:hover': {
+      opacity: 1,
+    },
+  },
 }));
 
 function ScrollTop(props) {
   const { children } = props;
-  const classes = useStyles();
   const trigger = useScrollTrigger({
     disableHysteresis: true,
     threshold: 100,
@@ -81,7 +96,7 @@ function ScrollTop(props) {
 
   return (
     <Zoom in={trigger}>
-      <div onClick={handleClick} role='presentation' className={classes.root}>
+      <div onClick={handleClick} role='presentation'>
         {children}
       </div>
     </Zoom>
@@ -91,9 +106,21 @@ function ScrollTop(props) {
 export default function Header(props) {
   const classes = useStyles();
   const [value, setValue] = useState(0);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [open, setOpen] = useState(false);
 
   const handleChange = (e, value) => {
     setValue(value);
+  };
+
+  const handleClick = (e) => {
+    setAnchorEl(e.currentTarget);
+    setOpen(true);
+  };
+
+  const handleClose = (e) => {
+    setAnchorEl(null);
+    setOpen(false);
   };
 
   useEffect(() => {
@@ -112,7 +139,7 @@ export default function Header(props) {
 
   return (
     <>
-      <AppBar position='fixed'>
+      <AppBar position='fixed' className={classes.appbar}>
         <Toolbar disableGutters>
           <Button
             component={Link}
@@ -135,6 +162,9 @@ export default function Header(props) {
               component={Link}
               label='Services'
               to='/services'
+              aria-owns={anchorEl ? 'simple-menu' : undefined}
+              aria-haspopup={anchorEl ? 'true' : undefined}
+              onMouseOver={(event) => handleClick(event)}
             />
             <Tab
               className={classes.tab}
@@ -159,13 +189,68 @@ export default function Header(props) {
             variant='contained'
             color='secondary'
             className={classes.button}
+            component={Link}
+            to='/estimate'
           >
             Free Estimate
           </Button>
+          <Menu
+            id='simple-menu'
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            classes={{ paper: classes.menu }}
+            MenuListProps={{ onMouseLeave: handleClose }}
+            elevation={0}
+          >
+            <MenuItem
+              component={Link}
+              to='/services'
+              onClick={() => {
+                handleClose();
+                setValue(1);
+              }}
+              classes={{ root: classes.menuItem }}
+            >
+              Services
+            </MenuItem>
+            <MenuItem
+              component={Link}
+              to='/customsoftware'
+              onClick={() => {
+                handleClose();
+                setValue(1);
+              }}
+              classes={{ root: classes.menuItem }}
+            >
+              Software development
+            </MenuItem>
+            <MenuItem
+              component={Link}
+              to='/mobileapps'
+              onClick={() => {
+                handleClose();
+                setValue(1);
+              }}
+              classes={{ root: classes.menuItem }}
+            >
+              Mobile App development
+            </MenuItem>
+            <MenuItem
+              component={Link}
+              to='/website'
+              onClick={() => {
+                handleClose();
+                setValue(1);
+              }}
+              classes={{ root: classes.menuItem }}
+            >
+              Website development
+            </MenuItem>
+          </Menu>
         </Toolbar>
       </AppBar>
-      <div className={classes.toolbarMargin} />
-      <Toolbar id='back-to-top-anchor' />
+      <Toolbar id='back-to-top-anchor' className={classes.toolbarMargin} />
       <ScrollTop {...props}>
         <Fab color='secondary' size='small' aria-label='scroll back to top'>
           <KeyboardArrowUpIcon />
