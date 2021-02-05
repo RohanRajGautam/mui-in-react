@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     right: theme.spacing(2),
   },
   appbar: {
-    // zIndex: theme.zIndex.modal + 1,
+    zIndex: theme.zIndex.modal + 1,
   },
   toolbarMargin: {
     ...theme.mixins.toolbar,
@@ -271,6 +271,8 @@ export default function Header(props) {
         classes={{ paper: classes.menu }}
         MenuListProps={{ onMouseLeave: handleClose }}
         elevation={0}
+        style={{ zIndex: 1302 }}
+        keepMounted
       >
         {menuOptions.map((option, i) => (
           <MenuItem
@@ -302,6 +304,7 @@ export default function Header(props) {
         onOpen={() => setOpenDrawer(true)}
         classes={{ paper: classes.drawer }}
       >
+        <div className={classes.toolbarMargin} />
         <List disablePadding>
           {routes.map((route) => (
             <ListItem
