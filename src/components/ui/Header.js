@@ -37,21 +37,21 @@ const useStyles = makeStyles((theme) => ({
   },
   toolbarMargin: {
     ...theme.mixins.toolbar,
-    marginBottom: '2em',
+    marginBottom: '3em',
     [theme.breakpoints.down('md')]: {
-      marginBottom: '1em',
+      marginBottom: '2em',
     },
     [theme.breakpoints.down('xs')]: {
-      marginBottom: '0.25em',
+      marginBottom: '1.25em',
     },
   },
   logo: {
-    height: '7em',
+    height: '8em',
     [theme.breakpoints.down('md')]: {
-      height: '6em',
+      height: '7em',
     },
     [theme.breakpoints.down('xs')]: {
-      height: '4.5em',
+      height: '5.5em',
     },
   },
   logoContainer: {
